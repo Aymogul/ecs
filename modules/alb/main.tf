@@ -38,12 +38,12 @@ resource "aws_lb" "this" {
 
 resource "aws_acm_certificate_validation" "this" {
   certificate_arn = aws_acm_certificate.this.arn
-  validation_record {
-    name    = "${var.env}-alb-${var.env}"
-    type    = "CNAME"
-    status  = "ISSUED"
-    alias   = var.env
+
+  timeouts {
+    create = "5m"
   }
+
+  depends_on = [aws_route53_record.validation]
 }
 
 resource "aws_acm_certificate" "this" {
