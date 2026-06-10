@@ -1,19 +1,53 @@
-# VPC Module
+# ECS Learning Project
 
-This module creates a VPC with public and private subnets, as well as an Internet Gateway and a NAT Gateway.
+This project builds a small but realistic AWS ECS/Fargate service:
 
-## Inputs
+* A VPC with public and private subnets across two Availability Zones
+* An Internet Gateway, NAT Gateway, route tables, and subnet associations
+* An internet-facing Application Load Balancer
+* An ECS cluster and Fargate service running `nginx`
+* CloudWatch logs and CPU-based service autoscaling
 
-* `region`: The AWS region where the VPC will be created.
-* `env`: The environment name (e.g. "dev", "prod").
-* `vpc_cidr`: The CIDR block for the VPC.
-* `public_subnets`: A list of public subnet CIDRs.
-* `private_subnets`: A list of private subnet CIDRs.
-* `availability_zones`: A list of availability zones.
+The first tangible outcome is a public ALB DNS name that serves the container after `terraform apply`.
 
-## Outputs
+## Project layout
 
-* `vpc_id`: The ID of the VPC.
-* `public_subnet_ids`: A list of public subnet IDs.
-* `private_subnet_ids`: A list of private subnet IDs.
-* `nat_gateway_id`: The ID of the NAT Gateway.
+```text
+.
+├── main.tf
+├── providers.tf
+├── variables.tf
+├── outputs.tf
+├── versions.tf
+├── terraform.tfvars.example
+└── modules
+    ├── alb
+    ├── ecs
+    └── vpc
+```
+
+## Try it
+
+Copy the example variables if you want to customize values:
+
+```sh
+cp terraform.tfvars.example terraform.tfvars
+```
+
+Then run:
+
+```sh
+terraform init
+terraform plan
+terraform apply
+```
+
+When the apply finishes, Terraform prints `alb_dns_name`. Open that URL to see the running container.
+
+## Clean up
+
+This stack creates billable AWS resources, including a NAT Gateway and Fargate tasks. Destroy it when you are done learning:
+
+```sh
+terraform destroy
+```
