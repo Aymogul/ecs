@@ -37,4 +37,6 @@ module "ecs" {
   log_retention         = var.log_retention
   min_capacity          = var.min_capacity
   max_capacity          = var.max_capacity
+
+  depends_on = [module.alb]
 }

@@ -1,8 +1,11 @@
+# Configure the AWS Provider
+provider "aws" {
+  region = var.region
+}
+
 # Create VPC
 resource "aws_vpc" "this" {
-  cidr_block           = var.vpc_cidr
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+  cidr_block = var.vpc_cidr
 
   tags = {
     Name        = "${var.env}-vpc"
@@ -38,26 +41,6 @@ resource "aws_subnet" "private" {
   }
 }
 
-# Create Internet Gateway
-resource "aws_internet_gateway" "this" {
-  vpc_id = aws_vpc.this.id
-
-  tags = {
-    Name        = "${var.env}-igw"
-    Environment = var.env
-  }
-}
-
-# Allocate an Elastic IP for the NAT Gateway
-resource "aws_eip" "this" {
-  domain = "vpc"
-
-  tags = {
-    Name        = "${var.env}-nat-eip"
-    Environment = var.env
-  }
-}
-
 # Create NAT Gateway
 resource "aws_nat_gateway" "this" {
   allocation_id = aws_eip.this.id
@@ -79,18 +62,13 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.this.id
   }
-
-  tags = {
-    Name        = "${var.env}-public-route-table"
-    Environment = var.env
-  }
 }
 
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
   route {
-    cidr_block     = "0.0.0.0/0"
+    cidr_block     = var.vpc_cidr
     nat_gateway_id = aws_nat_gateway.this.id
   }
 
@@ -100,14 +78,3 @@ resource "aws_route_table" "private" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  count          = length(aws_subnet.public)
-  subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "private" {
-  count          = length(aws_subnet.private)
-  subnet_id      = aws_subnet.private[count.index].id
-  route_table_id = aws_route_table.private.id
-}
