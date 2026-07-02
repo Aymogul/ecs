@@ -44,6 +44,26 @@ terraform apply
 
 When the apply finishes, Terraform prints `alb_dns_name`. Open that URL to see the running container.
 
+## CI and AWS access
+
+This repo includes a GitHub Actions workflow at `.github/workflows/terraform-ci.yml`.
+
+The CI runs:
+
+* `terraform fmt -check -recursive`
+* `terraform init -backend=false`
+* `terraform validate -no-color`
+* `terraform plan` when an AWS role is configured
+
+The best way to connect GitHub Actions to AWS is OpenID Connect (OIDC), not long-lived access keys.
+
+Create an IAM role in AWS that trusts GitHub's OIDC provider and allows only this repository/branch to assume it. Then add these repository variables in GitHub:
+
+* `AWS_ROLE_TO_ASSUME`: the IAM role ARN, for example `arn:aws:iam::123456789012:role/github-actions-terraform-ecs`
+* `AWS_REGION`: the AWS region, for example `us-east-1`
+
+Avoid storing `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in GitHub secrets for Terraform CI. Use access keys only as a temporary local fallback, rotate them quickly, and keep permissions narrow.
+
 ## Clean up
 
 This stack creates billable AWS resources, including a NAT Gateway and Fargate tasks. Destroy it when you are done learning:
