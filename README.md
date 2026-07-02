@@ -57,7 +57,7 @@ The CI runs:
 
 The best way to connect GitHub Actions to AWS is OpenID Connect (OIDC), not long-lived access keys.
 
-Create an IAM role in AWS that trusts GitHub's OIDC provider and allows only this repository/branch to assume it. Then add these repository variables in GitHub:
+Create an IAM role in AWS that trusts GitHub's OIDC provider and allows only this repository/branch to assume it. See `docs/github-oidc-aws.md` for a concrete trust-policy example. Then add these repository variables in GitHub:
 
 * `AWS_ROLE_TO_ASSUME`: the IAM role ARN, for example `arn:aws:iam::123456789012:role/github-actions-terraform-ecs`
 * `AWS_REGION`: the AWS region, for example `us-east-1`
