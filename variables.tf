@@ -87,3 +87,58 @@ variable "max_capacity" {
   description = "Maximum task count for autoscaling."
   default     = 4
 }
+
+variable "enable_temporal" {
+  type        = bool
+  description = "Whether to deploy the Temporal ECS/RDS stack."
+  default     = false
+}
+
+variable "temporal_allowed_ui_cidrs" {
+  type        = list(string)
+  description = "CIDR blocks allowed to reach the Temporal UI load balancer."
+  default     = ["0.0.0.0/0"]
+}
+
+variable "temporal_db_username" {
+  type        = string
+  description = "Temporal PostgreSQL username."
+  default     = "temporal"
+}
+
+variable "temporal_db_password" {
+  type        = string
+  description = "Temporal PostgreSQL password. Override this in terraform.tfvars or CI variables before enabling Temporal."
+  sensitive   = true
+  default     = "change-me-temporal-password"
+}
+
+variable "temporal_db_instance_class" {
+  type        = string
+  description = "RDS instance class for Temporal persistence."
+  default     = "db.t4g.micro"
+}
+
+variable "temporal_image" {
+  type        = string
+  description = "Temporal server Docker image."
+  default     = "temporalio/auto-setup:1.25.2"
+}
+
+variable "temporal_ui_image" {
+  type        = string
+  description = "Temporal UI Docker image."
+  default     = "temporalio/ui:2.31.2"
+}
+
+variable "temporal_cpu" {
+  type        = number
+  description = "Fargate CPU units for the Temporal task."
+  default     = 1024
+}
+
+variable "temporal_memory" {
+  type        = number
+  description = "Fargate memory in MiB for the Temporal task."
+  default     = 2048
+}

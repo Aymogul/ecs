@@ -10,3 +10,10 @@ container_port = 80
 desired_count  = 2
 min_capacity   = 2
 max_capacity   = 4
+
+# Temporal is disabled by default to avoid adding RDS/ECS/ALB cost accidentally.
+# Set this to true when you want to deploy Temporal.
+enable_temporal = false
+
+# Override before enabling Temporal.
+temporal_db_password = "replace-with-a-long-random-password"

@@ -2,6 +2,14 @@
 .terraform/
 *.tfstate
 *.tfstate.backup
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
 
 # Ignore actual secret variable files
 *.tfvars
