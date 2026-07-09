@@ -8,6 +8,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      deploy_temporal:
+        description: "Include the optional Temporal module in terraform plan"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -18,6 +24,8 @@ env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  TF_VAR_enable_temporal: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_temporal || false }}
+  TF_VAR_temporal_db_password: ${{ secrets.TEMPORAL_DB_PASSWORD }}
 
 jobs:
   validate:
