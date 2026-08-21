@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+jinja2
+temporalio
+psycopg[binary,pool]
+python-multipart
+email-validator
+

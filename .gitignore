@@ -14,3 +14,12 @@ override.tf.json
 # Ignore actual secret variable files
 *.tfvars
 !*.tfvars.example
+
+# Python / app runtime
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+postgres-data/
+temporal-data/

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <script>
+    window.__ASTER__ = {{ initial_state | tojson }};
+  </script>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-text">{{ app_name }}</span>
+      </div>
+      <nav class="topnav">
+        <a href="#build">Build</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#deployment">Deployment</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Premium commerce. Durable execution.</p>
+          <h1>A calm storefront with a serious orchestration engine.</h1>
+          <p class="lede">
+            Aster Studio gives the front of the house a refined launch experience while Temporal keeps the
+            back of the house honest, retryable, and observable.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#build">Reserve a build</a>
+            <a class="button ghost" href="#timeline">See the workflow</a>
+          </div>
+          <ul class="stat-strip" id="stat-strip"></ul>
+        </div>
+
+        <figure class="hero-visual">
+          <img src="/static/hero.png" alt="Abstract premium hero image for Aster Studio" />
+          <figcaption>
+            A studio-class build experience designed to feel quiet, fast, and precise.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="band details-band">
+        <div class="band-heading">
+          <p class="eyebrow">Product intent</p>
+          <h2>Everything is shaped for a premium order journey.</h2>
+        </div>
+        <div class="feature-grid" id="feature-grid"></div>
+      </section>
+
+      <section class="band build-band" id="build">
+        <div class="panel form-panel">
+          <p class="eyebrow">Configure your build</p>
+          <h2>Choose a finish, memory tier, and delivery experience.</h2>
+          <form id="order-form" class="order-form">
+            <div class="field">
+              <label for="customer_name">Name</label>
+              <input id="customer_name" name="customer_name" type="text" placeholder="Ada Lovelace" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="ada@example.com" required />
+            </div>
+            <div class="field">
+              <label for="finish">Finish</label>
+              <select id="finish" name="finish"></select>
+            </div>
+            <div class="field">
+              <label for="memory">Memory</label>
+              <select id="memory" name="memory"></select>
+            </div>
+            <div class="field">
+              <label for="delivery_speed">Delivery</label>
+              <select id="delivery_speed" name="delivery_speed"></select>
+            </div>
+            <div class="field">
+              <label for="quantity">Quantity</label>
+              <input id="quantity" name="quantity" type="range" min="1" max="3" value="1" />
+              <div class="range-labels">
+                <span>1</span>
+                <span id="quantity-value">1 unit</span>
+                <span>3</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="engraving">Engraving</label>
+              <input id="engraving" name="engraving" type="text" maxlength="40" placeholder="For the moments that matter" />
+            </div>
+            <button class="button primary submit-button" type="submit">Reserve my build</button>
+          </form>
+        </div>
+
+        <div class="panel quote-panel" id="timeline">
+          <p class="eyebrow">Live workflow</p>
+          <h2>Temporal keeps every step visible.</h2>
+          <div class="quote-card" id="quote-card">
+            <div>
+              <span class="muted">Estimated total</span>
+              <strong id="quote-total">$2,490</strong>
+            </div>
+            <div class="quote-line"><span>Base</span><strong id="quote-base">$2,490</strong></div>
+            <div class="quote-line"><span>Finish</span><strong id="quote-finish">$0</strong></div>
+            <div class="quote-line"><span>Memory</span><strong id="quote-memory">$0</strong></div>
+            <div class="quote-line"><span>Delivery</span><strong id="quote-delivery">$0</strong></div>
+          </div>
+          <div class="timeline" id="workflow-timeline"></div>
+        </div>
+      </section>
+
+      <section class="band recent-band" id="deployment">
+        <div class="band-heading">
+          <p class="eyebrow">Recent orders</p>
+          <h2>What Temporal is managing right now.</h2>
+        </div>
+        <div class="recent-table" id="recent-orders"></div>
+      </section>
+
+      <section class="band deploy-band">
+        <div class="band-heading">
+          <p class="eyebrow">AWS shape</p>
+          <h2>Containerized cleanly for ECS, RDS, and ALB.</h2>
+        </div>
+        <div class="deployment-notes">
+          <p>
+            App and worker run as separate containers. Postgres holds the application state. Temporal handles
+            orchestration and retries. In AWS, the same shape maps naturally to ECS services, RDS PostgreSQL,
+            Secrets Manager, CloudWatch logs, and an internal Temporal deployment.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
+
