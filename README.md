@@ -18,6 +18,7 @@ The point of the project is not just to look good. It is to feel like a high-end
 - A Postgres database for orders and events
 - Docker Compose for the whole local stack
 - ECS deployment notes for AWS
+- A production platform baseline for the AWS rollout
 
 ## Run locally
 
@@ -48,6 +49,12 @@ app/templates/  Main landing page template
 db/             Postgres init scripts
 dynamicconfig/  Temporal local config
 ecs/            AWS ECS deployment notes
+docs/           AWS access and production-platform decisions
 scripts/        Small helper scripts
 ```
 
+## Production direction
+
+The approved target is documented in [the production platform baseline](docs/platform-baseline.md).
+It separates the app and worker on ECS Fargate, uses RDS for application data,
+and uses Temporal Cloud outside local development.

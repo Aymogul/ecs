@@ -20,7 +20,7 @@ class AsterOrderWorkflow:
         self._status = "created"
 
     @workflow.run
-    async def run(self, order_id: str) -> dict[str, object]:
+    async def run(self, order_id: str) -> dict[str, str]:
         retry_policy = RetryPolicy(
             initial_interval=timedelta(seconds=1),
             backoff_coefficient=2.0,
@@ -73,4 +73,3 @@ class AsterOrderWorkflow:
     @workflow.query
     def status(self) -> str:
         return self._status
-

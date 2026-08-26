@@ -19,7 +19,7 @@ def stable_id(prefix: str, *parts: str) -> str:
 
 
 @activity.defn
-async def reserve_inventory(order_id: str) -> dict[str, object]:
+async def reserve_inventory(order_id: str) -> dict[str, str]:
     order = db.get_order(order_id)
     if order is None:
         raise RuntimeError(f"missing order {order_id}")
@@ -43,7 +43,7 @@ async def reserve_inventory(order_id: str) -> dict[str, object]:
 
 
 @activity.defn
-async def capture_payment(order_id: str) -> dict[str, object]:
+async def capture_payment(order_id: str) -> dict[str, str]:
     order = db.get_order(order_id)
     if order is None:
         raise RuntimeError(f"missing order {order_id}")
@@ -74,11 +74,11 @@ async def capture_payment(order_id: str) -> dict[str, object]:
         "Captured payment and issued a stable receipt.",
         {"receipt_id": receipt_id, "attempt": attempt},
     )
-    return {"receipt_id": receipt_id, "attempt": attempt}
+    return {"receipt_id": receipt_id}
 
 
 @activity.defn
-async def prepare_shipment(order_id: str) -> dict[str, object]:
+async def prepare_shipment(order_id: str) -> dict[str, str]:
     order = db.get_order(order_id)
     if order is None:
         raise RuntimeError(f"missing order {order_id}")
@@ -101,7 +101,7 @@ async def prepare_shipment(order_id: str) -> dict[str, object]:
 
 
 @activity.defn
-async def send_concierge_notification(order_id: str) -> dict[str, object]:
+async def send_concierge_notification(order_id: str) -> dict[str, str]:
     order = db.get_order(order_id)
     if order is None:
         raise RuntimeError(f"missing order {order_id}")
@@ -122,4 +122,3 @@ async def send_concierge_notification(order_id: str) -> dict[str, object]:
     )
     logger.info("order completed", extra={"order_id": order_id, "notification_id": notification_id})
     return {"notification_id": notification_id}
-
