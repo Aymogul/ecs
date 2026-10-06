@@ -8,12 +8,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      deploy_temporal:
-        description: "Include the optional Temporal module in terraform plan"
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: read
@@ -24,8 +18,10 @@ env:
   TF_IN_AUTOMATION: "true"
   TF_INPUT: "false"
   AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
-  TF_VAR_enable_temporal: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_temporal || false }}
-  TF_VAR_temporal_db_password: ${{ secrets.TEMPORAL_DB_PASSWORD }}
+  TF_VAR_app_image: ${{ vars.APP_IMAGE }}
+  TF_VAR_temporal_cloud_address: ${{ vars.TEMPORAL_CLOUD_ADDRESS }}
+  TF_VAR_temporal_cloud_namespace: ${{ vars.TEMPORAL_CLOUD_NAMESPACE }}
+  TF_VAR_temporal_cloud_api_key: ${{ secrets.TEMPORAL_CLOUD_API_KEY }}
 
 jobs:
   validate:
@@ -75,6 +71,18 @@ jobs:
         with:
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify staging configuration
+        env:
+          APP_IMAGE: ${{ vars.APP_IMAGE }}
+          TEMPORAL_CLOUD_ADDRESS: ${{ vars.TEMPORAL_CLOUD_ADDRESS }}
+          TEMPORAL_CLOUD_NAMESPACE: ${{ vars.TEMPORAL_CLOUD_NAMESPACE }}
+          TEMPORAL_CLOUD_API_KEY: ${{ secrets.TEMPORAL_CLOUD_API_KEY }}
+        run: |
+          test -n "$APP_IMAGE" || { echo "Missing GitHub Actions variable: APP_IMAGE"; exit 1; }
+          test -n "$TEMPORAL_CLOUD_ADDRESS" || { echo "Missing GitHub Actions variable: TEMPORAL_CLOUD_ADDRESS"; exit 1; }
+          test -n "$TEMPORAL_CLOUD_NAMESPACE" || { echo "Missing GitHub Actions variable: TEMPORAL_CLOUD_NAMESPACE"; exit 1; }
+          test -n "$TEMPORAL_CLOUD_API_KEY" || { echo "Missing GitHub Actions secret: TEMPORAL_CLOUD_API_KEY"; exit 1; }
 
       - name: Terraform init
         run: terraform init
