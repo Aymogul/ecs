@@ -142,3 +142,102 @@ variable "temporal_memory" {
   description = "Fargate memory in MiB for the Temporal task."
   default     = 2048
 }
+
+variable "app_image" {
+  type        = string
+  description = "Immutable ECR image URI (prefer an image digest) for both app and worker tasks."
+}
+
+variable "app_container_port" {
+  type        = number
+  description = "FastAPI listener port in the app container."
+  default     = 8000
+}
+
+variable "app_cpu" {
+  type    = number
+  default = 512
+}
+variable "app_memory" {
+  type    = number
+  default = 1024
+}
+variable "app_desired_count" {
+  type    = number
+  default = 2
+}
+variable "worker_cpu" {
+  type    = number
+  default = 512
+}
+variable "worker_memory" {
+  type    = number
+  default = 1024
+}
+variable "worker_desired_count" {
+  type    = number
+  default = 1
+}
+
+variable "database_name" {
+  type    = string
+  default = "aster"
+}
+variable "database_username" {
+  type    = string
+  default = "aster_app"
+}
+variable "postgres_engine_version" {
+  type    = string
+  default = "16.6"
+}
+variable "database_instance_class" {
+  type    = string
+  default = "db.t4g.micro"
+}
+variable "database_allocated_storage" {
+  type    = number
+  default = 20
+}
+variable "database_max_allocated_storage" {
+  type    = number
+  default = 100
+}
+variable "database_backup_retention_days" {
+  type    = number
+  default = 7
+}
+variable "database_multi_az" {
+  type    = bool
+  default = false
+}
+variable "database_deletion_protection" {
+  type    = bool
+  default = false
+}
+variable "database_skip_final_snapshot" {
+  type    = bool
+  default = true
+}
+
+variable "temporal_cloud_address" {
+  type        = string
+  description = "Temporal Cloud gRPC endpoint, for example namespace.account.tmprl.cloud:7233."
+}
+
+variable "temporal_cloud_namespace" {
+  type        = string
+  description = "Temporal Cloud namespace used by the app and worker."
+}
+
+variable "temporal_cloud_api_key" {
+  type        = string
+  description = "Temporal Cloud API key used by ECS tasks. Supply only through CI or a protected tfvars file."
+  sensitive   = true
+}
+
+variable "demo_fail_first_payment" {
+  type        = bool
+  description = "Whether every order simulates one failed payment before retrying. Disable outside demo environments."
+  default     = false
+}

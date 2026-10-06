@@ -20,6 +20,8 @@ async def main() -> None:
         client = await Client.connect(
             settings.temporal_address,
             namespace=settings.temporal_namespace,
+            api_key=settings.temporal_api_key,
+            tls=settings.temporal_tls,
         )
         worker = Worker(
             client,

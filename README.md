@@ -58,3 +58,5 @@ scripts/        Small helper scripts
 The approved target is documented in [the production platform baseline](docs/platform-baseline.md).
 It separates the app and worker on ECS Fargate, uses RDS for application data,
 and uses Temporal Cloud outside local development.
+
+For the Terraform-driven staging rollout, see [the staging deployment guide](docs/staging-deployment.md).

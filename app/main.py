@@ -33,6 +33,8 @@ async def startup() -> None:
         app.state.temporal = await Client.connect(
             settings.temporal_address,
             namespace=settings.temporal_namespace,
+            api_key=settings.temporal_api_key,
+            tls=settings.temporal_tls,
         )
         logger.info("connected to temporal at %s", settings.temporal_address)
     except Exception as exc:  # pragma: no cover - startup fallback

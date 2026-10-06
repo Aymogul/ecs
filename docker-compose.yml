@@ -55,6 +55,7 @@ services:
       DATABASE_URL: postgresql://aster:aster@postgres:5432/aster_app
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
+      TEMPORAL_TLS: "false"
       TASK_QUEUE: aster-orders
       DEMO_FAIL_FIRST_PAYMENT: "true"
       RECENT_ORDERS_LIMIT: "8"
@@ -74,6 +75,7 @@ services:
       DATABASE_URL: postgresql://aster:aster@postgres:5432/aster_app
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
+      TEMPORAL_TLS: "false"
       TASK_QUEUE: aster-orders
       DEMO_FAIL_FIRST_PAYMENT: "true"
 
